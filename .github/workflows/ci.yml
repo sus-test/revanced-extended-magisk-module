@@ -2,7 +2,7 @@ name: CI
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 16 * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   check:
@@ -26,32 +26,32 @@ jobs:
               [ -z "$cur_yt" ] && return 1 # empty, fail=>dont build
               declare -r last_ver=$(get_apk_vers "https://www.apkmirror.com/uploads/?appcategory=youtube" | get_largest_ver)
 
-              echo "current yt version: $cur_yt"
-              echo "latest yt version: $last_ver"
+              echo "Current YT version: $cur_yt"
+              echo "Latest YT version: $last_ver"
               [ "$cur_yt" != "$last_ver" ] # test success=>build, fail=>dont build
             else
-              return 1 # not experimental, dont build
+              return 1 # Not experimental, dont build
             fi
           }
 
           is_patches_latest() {
-            declare -r last_patches_url=$(wget -nv -O- https://api.github.com/repos/revanced/revanced-patches/releases/latest | json_get 'browser_download_url' 'jar')
+            declare -r last_patches_url=$(wget -nv -O- https://api.github.com/repos/inotia00/revanced-patches/releases/latest | json_get 'browser_download_url' 'jar')
             declare -r last_patches=${last_patches_url##*/}
             cur_patches=$(sed -n 's/.*Patches: \(.*\)/\1/p' build.md | xargs)
 
-            echo "current patches version: $cur_patches"
-            echo "latest patches version: $last_patches"
+            echo "Current patches version: $cur_patches"
+            echo "Latest patches version: $last_patches"
             [ "$cur_patches" != "$last_patches" ] # test success=>build, fail=>dont build
           }
 
           if ! git checkout update; then
-            echo "first time building!"
+            echo "First time building!"
             echo "SHOULD_BUILD=1" >> $GITHUB_OUTPUT
           elif is_patches_latest || is_youtube_latest; then
-            echo "build!"
+            echo "Build!"
             echo "SHOULD_BUILD=1" >> $GITHUB_OUTPUT
           else
-            echo "dont build!"
+            echo "Dont build!"
             echo "SHOULD_BUILD=0" >> $GITHUB_OUTPUT
           fi
 

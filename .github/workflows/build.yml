@@ -39,9 +39,9 @@ jobs:
           cp -f build.md build.tmp
 
           cd build
-          yt_op=$(find . -maxdepth 1 -name "youtube-revanced-magisk-*.zip" -printf '%P')
+          yt_op=$(find . -maxdepth 1 -name "youtube-revanced-extended-magisk-*.zip" -printf '%P')
           if [ -z "$yt_op" ]; then
-            echo "RELEASE_NAME=ReVanced" >> $GITHUB_OUTPUT
+            echo "RELEASE_NAME=ReVanced Extended" >> $GITHUB_OUTPUT
           else
             echo "RELEASE_NAME=$yt_op" >> $GITHUB_OUTPUT
           fi
@@ -73,9 +73,9 @@ jobs:
           }"
           }
 
-          cd build || echo "build folder not found"
-          for OUTPUT in *revanced*.zip; do
-            [ "$OUTPUT" = "*revanced*.zip" ] && continue
+          cd build || echo "Build folder not found"
+          for OUTPUT in *revanced-extended*.zip; do
+            [ "$OUTPUT" = "*revanced-extended*.zip" ] && continue
             ZIP_S=$(unzip -p "$OUTPUT" module.prop)
             if ! UPDATE_JSON=$(echo "$ZIP_S" | grep updateJson); then
               continue
