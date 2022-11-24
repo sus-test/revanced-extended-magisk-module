@@ -29,7 +29,7 @@ You can get the [latest CI release from here](https://github.com/MatadorProBr/re
  * Run the [workflow](../../actions/workflows/build.yml)
  * Grab your modules from [releases](../../releases)
 
-To be able to use non-root variants of YT and Music you will need to install [Vanced Extended MicroG](https://github.com/inotia00/VancedMicroG/releases) (recommended) or [Vanced MicroG](https://github.com/TeamVanced/VancedMicroG/releases).
+To be able to use non-root variants of YT and YT Music you will need to install [Vanced Extended MicroG](https://github.com/inotia00/VancedMicroG/releases) (recommended) or [Vanced MicroG](https://github.com/TeamVanced/VancedMicroG/releases).
 
 # Building Locally
 Make sure you have JDK 17 installed. Then run:
