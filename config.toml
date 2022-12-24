@@ -30,6 +30,7 @@ version = "auto"
 microg-patch = "music-microg-support"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music/"
 module-prop-name = "ytmusicrvx-magisk"
+merge-integrations = true
 arch = "arm64-v8a"
 
 [Music-arm]
@@ -41,4 +42,5 @@ version = "auto"
 microg-patch = "music-microg-support"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music/"
 module-prop-name = "ytmusicrvx-arm-magisk"
+merge-integrations = true
 arch = "arm-v7a"

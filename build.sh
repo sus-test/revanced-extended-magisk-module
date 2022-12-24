@@ -78,10 +78,10 @@ for t in $(toml_get_all_tables); do
 	if [ "${app_args[apkmirror_dlurl]:-}" ] && [ "${app_args[apkmirror_regex]:-}" ]; then app_args[dl_from]=apkmirror; else app_args[dl_from]=uptodown; fi
 
 	app_args[patcher_args]="$(join_args "${excluded_patches}" -e) $(join_args "${included_patches}" -i)"
-	[ "$merge_integrations" = true ] && app_args[patcher_args]="${app_args[patcher_args]} -m ${RV_INTEGRATIONS_APK}"
+	[ "$merge_integrations" = true ] && app_args[patcher_args]="${app_args[patcher_args]} -m ${RVX_INTEGRATIONS_APK}"
 	[ "$exclusive_patches" = true ] && app_args[patcher_args]="${app_args[patcher_args]} --exclusive"
 
-	build_rv app_args &
+	build_rvx app_args &
 done
 wait
 

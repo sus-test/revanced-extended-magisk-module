@@ -8,7 +8,7 @@ TEMP_DIR="temp"
 BUILD_DIR="build"
 PKGS_LIST="temp/module-pkgs"
 
-GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-$"MatadorProBr/revanced-magisk-module"}
+GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-$"MatadorProBr/revanced-extended-magisk-module"}
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 WGET_HEADER="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0"
 
@@ -51,26 +51,26 @@ read_main_config() {
 
 get_prebuilts() {
 	echo "Getting prebuilts"
-	RV_CLI_URL=$(req https://api.github.com/repos/inotia00/revanced-cli/releases/latest - | json_get 'browser_download_url')
-	RV_CLI_JAR="${TEMP_DIR}/${RV_CLI_URL##*/}"
-	log "CLI: ${RV_CLI_URL##*/}"
+	RVX_CLI_URL=$(req https://api.github.com/repos/inotia00/revanced-cli/releases/latest - | json_get 'browser_download_url')
+	RVX_CLI_JAR="${TEMP_DIR}/${RVX_CLI_URL##*/}"
+	log "CLI: ${RVX_CLI_URL##*/}"
 
-	RV_INTEGRATIONS_URL=$(req https://api.github.com/repos/inotia00/revanced-integrations/releases/latest - | json_get 'browser_download_url')
-	RV_INTEGRATIONS_APK=${RV_INTEGRATIONS_URL##*/}
-	RV_INTEGRATIONS_APK="${RV_INTEGRATIONS_APK%.apk}-$(cut -d/ -f8 <<<"$RV_INTEGRATIONS_URL").apk"
-	log "Integrations: $RV_INTEGRATIONS_APK"
-	RV_INTEGRATIONS_APK="${TEMP_DIR}/${RV_INTEGRATIONS_APK}"
+	RVX_INTEGRATIONS_URL=$(req https://api.github.com/repos/inotia00/revanced-integrations/releases/latest - | json_get 'browser_download_url')
+	RVX_INTEGRATIONS_APK=${RVX_INTEGRATIONS_URL##*/}
+	RVX_INTEGRATIONS_APK="${RVX_INTEGRATIONS_APK%.apk}-$(cut -d/ -f8 <<<"$RVX_INTEGRATIONS_URL").apk"
+	log "Integrations: $RVX_INTEGRATIONS_APK"
+	RVX_INTEGRATIONS_APK="${TEMP_DIR}/${RVX_INTEGRATIONS_APK}"
 
-	RV_PATCHES=$(req https://api.github.com/repos/inotia00/revanced-patches/releases/latest -)
-	RV_PATCHES_CHANGELOG=$(echo "$RV_PATCHES" | json_get 'body' | sed 's/\(\\n\)\+/\\n/g')
-	RV_PATCHES_URL=$(echo "$RV_PATCHES" | json_get 'browser_download_url' | grep 'jar')
-	RV_PATCHES_JAR="${TEMP_DIR}/${RV_PATCHES_URL##*/}"
-	log "Patches: ${RV_PATCHES_URL##*/}"
-	log "\n${RV_PATCHES_CHANGELOG//# [/### [}\n"
+	RVX_PATCHES=$(req https://api.github.com/repos/inotia00/revanced-patches/releases/latest -)
+	RVX_PATCHES_CHANGELOG=$(echo "$RVX_PATCHES" | json_get 'body' | sed 's/\(\\n\)\+/\\n/g')
+	RVX_PATCHES_URL=$(echo "$RVX_PATCHES" | json_get 'browser_download_url' | grep 'jar')
+	RVX_PATCHES_JAR="${TEMP_DIR}/${RVX_PATCHES_URL##*/}"
+	log "Patches: ${RVX_PATCHES_URL##*/}"
+	log "\n${RVX_PATCHES_CHANGELOG//# [/### [}\n"
 
-	dl_if_dne "$RV_CLI_JAR" "$RV_CLI_URL"
-	dl_if_dne "$RV_INTEGRATIONS_APK" "$RV_INTEGRATIONS_URL"
-	dl_if_dne "$RV_PATCHES_JAR" "$RV_PATCHES_URL"
+	dl_if_dne "$RVX_CLI_JAR" "$RVX_CLI_URL"
+	dl_if_dne "$RVX_INTEGRATIONS_APK" "$RVX_INTEGRATIONS_URL"
+	dl_if_dne "$RVX_PATCHES_JAR" "$RVX_PATCHES_URL"
 }
 
 get_cmpr() {
@@ -82,15 +82,15 @@ abort() { echo "abort: $1" && exit 1; }
 
 set_prebuilts() {
 	[ -d "$TEMP_DIR" ] || abort "${TEMP_DIR} directory could not be found"
-	RV_CLI_JAR=$(find "$TEMP_DIR" -maxdepth 1 -name "revanced-cli-*" | tail -n1)
-	[ -z "$RV_CLI_JAR" ] && abort "ReVanced CLI not found"
-	log "CLI: ${RV_CLI_JAR#"$TEMP_DIR/"}"
-	RV_INTEGRATIONS_APK=$(find "$TEMP_DIR" -maxdepth 1 -name "app-release-unsigned-*" | tail -n1)
-	[ -z "$RV_CLI_JAR" ] && abort "ReVanced Integrations not found"
-	log "Integrations: ${RV_INTEGRATIONS_APK#"$TEMP_DIR/"}"
-	RV_PATCHES_JAR=$(find "$TEMP_DIR" -maxdepth 1 -name "revanced-patches-*" | tail -n1)
-	[ -z "$RV_CLI_JAR" ] && abort "ReVanced Patches not found"
-	log "Patches: ${RV_PATCHES_JAR#"$TEMP_DIR/"}"
+	RVX_CLI_JAR=$(find "$TEMP_DIR" -maxdepth 1 -name "revanced-cli-*" | tail -n1)
+	[ -z "$RVX_CLI_JAR" ] && abort "ReVanced CLI not found"
+	log "CLI: ${RVX_CLI_JAR#"$TEMP_DIR/"}"
+	RVX_INTEGRATIONS_APK=$(find "$TEMP_DIR" -maxdepth 1 -name "app-release-unsigned-*" | tail -n1)
+	[ -z "$RVX_CLI_JAR" ] && abort "ReVanced Integrations not found"
+	log "Integrations: ${RVX_INTEGRATIONS_APK#"$TEMP_DIR/"}"
+	RVX_PATCHES_JAR=$(find "$TEMP_DIR" -maxdepth 1 -name "revanced-patches-*" | tail -n1)
+	[ -z "$RVX_CLI_JAR" ] && abort "ReVanced Patches not found"
+	log "Patches: ${RVX_PATCHES_JAR#"$TEMP_DIR/"}"
 }
 
 reset_template() {
@@ -114,7 +114,7 @@ get_largest_ver() {
 	if [[ $max != 0 ]]; then echo "$max"; fi
 }
 get_patch_last_supported_ver() {
-	unzip -p "$RV_PATCHES_JAR" | strings -s , | sed -rn "s/.*${1},versions,(([0-9.]*,*)*),Lk.*/\1/p" | tr ',' '\n' | get_largest_ver
+	unzip -p "$RVX_PATCHES_JAR" | strings -s , | sed -rn "s/.*${1},versions,(([0-9.]*,*)*),Lk.*/\1/p" | tr ',' '\n' | get_largest_ver
 }
 
 dl_if_dne() {
@@ -169,7 +169,7 @@ get_uptodown_pkg_name() {
 patch_apk() {
 	local stock_input=$1 patched_apk=$2 patcher_args=$3
 	declare -r tdir=$(mktemp -d -p $TEMP_DIR)
-	local cmd="java -jar $RV_CLI_JAR --temp-dir=$tdir -c -a $stock_input -o $patched_apk -b $RV_PATCHES_JAR --keystore=ks.keystore $patcher_args"
+	local cmd="java -jar $RVX_CLI_JAR --temp-dir=$tdir -c -a $stock_input -o $patched_apk -b $RVX_PATCHES_JAR --keystore=ks.keystore $patcher_args"
 	echo "$cmd"
 	eval "$cmd"
 }
@@ -183,7 +183,7 @@ zip_module() {
 	cd ../..
 }
 
-build_rv() {
+build_rvx() {
 	local -n args=$1
 	local version patcher_args build_mode_arr pkg_name uptwod_resp
 	local mode_arg=${args[build_mode]} version_mode=${args[version]}
