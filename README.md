@@ -8,7 +8,7 @@ You can get the [latest CI release from here](https://github.com/MatadorProBr/re
 
 ## Features
  * Can build Magisk modules or non-root APKs
- * Updated every 5 minutes with the latest versions of apps and patches in accordance with your configuration
+ * Updated every hour with the latest versions of apps and patches in accordance with your configuration
  * Cleans APKs from unneeded libs to make them smaller
  * Fully open-source, every binary or APK is compiled without human intervention
  * Modules
@@ -18,7 +18,7 @@ You can get the [latest CI release from here](https://github.com/MatadorProBr/re
      * handle installation of the correct version of the stock app and all that
      * mount the patched app immediately without needing to reboot
 
-#### **Note that the [CI workflow](../../actions/workflows/ci.yml) is scheduled to build the modules and APKs every 5 minutes if there is a change. You may want to disable it.**
+#### **Note that the [CI workflow](../../actions/workflows/ci.yml) is scheduled to build the modules and APKs every hour if there is a change. You may want to disable it.**
 
 ## To include/exclude patches
 [**See the list of patches**](https://github.com/inotia00/revanced-patches/tree/revanced-extended#-patches)
