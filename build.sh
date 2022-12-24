@@ -37,11 +37,19 @@ if ((COMPRESSION_LEVEL > 9)) || ((COMPRESSION_LEVEL < 1)); then
 	abort "COMPRESSION_LEVEL must be between 1 and 9"
 fi
 
-log "**App Versions:**"
-build_youtube &
-build_music &
+build_functions=(
+	build_youtube build_music
+)
 
+log "**App Versions:**"
+for f in "${build_functions[@]}"; do
+	eval "$f &"
+	while [ "$(jobs -r | wc -l)" -ge 3 ]; do
+		sleep 5
+	done
+done
 wait
+rm -rf temp/tmp.*
 
 if [ "$BUILD_MINDETACH_MODULE" = true ]; then
 	echo "Building mindetach module"
@@ -56,9 +64,9 @@ if [ "$BUILD_MINDETACH_MODULE" = true ]; then
 fi
 
 if [[ "${YOUTUBE_MODE%/*}" =~ ^(apk|both)$ || "${MUSIC_ARM64_V8A_MODE%/*}" =~ ^(apk|both)$ || "${MUSIC_ARM_V7A_MODE%/*}" =~ ^(apk|both)$ ]]; then
-	log "\nInstall [Vanced Extended MicroG](https://github.com/inotia00/VancedMicroG/releases) (recommended) or [Vanced MicroG](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or YouTube Music"
+	log "\nInstall [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or Music"
 fi
-log "\n[revanced-extended-magisk-module](https://github.com/MatadorProBr/revanced-extended-magisk-module)"
+log "\n[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)"
 
 reset_template
 echo "Done"
