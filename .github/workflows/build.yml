@@ -41,9 +41,9 @@ jobs:
           cd build
           yt_op=$(find . -maxdepth 1 -name "youtube-revanced-magisk-*.zip" -printf '%P')
           if [ -z "$yt_op" ]; then
-            echo "RELEASE_NAME=ReVanced APKs" >> $GITHUB_OUTPUT
+            echo "RELEASE_NAME=ReVanced Extended APKs" >> $GITHUB_OUTPUT
           else
-            echo "RELEASE_NAME=ReVanced Modules/APKs" >> $GITHUB_OUTPUT
+            echo "RELEASE_NAME=ReVanced Extended Modules/APKs" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload modules to release
@@ -108,7 +108,7 @@ jobs:
           NL=$'\n'
           APKS=""
           MODULES=""
-          for OUTPUT in *revanced*; do
+          for OUTPUT in *revanced-extended*; do
             DL_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${NEXT_VER_CODE}/${OUTPUT}"
             if [[ $OUTPUT = *.apk ]]; then
               APKS+="${NL}📦[${OUTPUT}](${DL_URL})"
