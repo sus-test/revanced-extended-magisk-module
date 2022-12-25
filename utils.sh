@@ -11,6 +11,7 @@ PKGS_LIST="temp/module-pkgs"
 GITHUB_REPOSITORY=${GITHUB_REPOSITORY:-$"MatadorProBr/revanced-extended-magisk-module"}
 NEXT_VER_CODE=${NEXT_VER_CODE:-$(date +'%Y%m%d')}
 WGET_HEADER="User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0"
+DRYRUN=false
 
 SERVICE_SH=$(cat $MODULE_SCRIPTS_DIR/service.sh)
 POSTFSDATA_SH=$(cat $MODULE_SCRIPTS_DIR/post-fs-data.sh)
@@ -22,21 +23,15 @@ json_get() {
 }
 
 toml_prep() {
-	__TOML__=$(echo "$1" | sed -r 's/^([^"]*"[^"]*")*([^#]*).*/\1\2/' | tr -d ' \t\r' | grep -v '^$')
+	__TOML__=$(echo "$1" | tr -d '\t\r' | tr "'" '"' | grep -o '^[^#]*' | grep -v '^$' | sed -r 's/(\".*\")|\s*/\1/g')
 }
-
 toml_get_all_tables() {
 	echo "$__TOML__" | grep -x '\[.*\]' | tr -d '[]' || return 1
 }
-
 toml_get() {
 	local table=$1 key=$2
 	val=$(echo "$__TOML__" | sed -n "/\[${table}]/,/^\[.*]$/p" | grep "^${key}=")
-	if [ "$val" ]; then
-		echo "${val#*=}" | sed -e "s/^[\"']//" -e "s/[\"']$//"
-	else
-		return 1
-	fi
+	[ "$val" ] && echo "${val#*=}" | sed -e "s/^\"//; s/\"$//"
 }
 
 #shellcheck disable=SC2034
@@ -127,6 +122,10 @@ dl_if_dne() {
 # ------- apkmirror -------------
 dl_apkmirror() {
 	local url=$1 version=$2 regexp=$3 output=$4
+	if [ $DRYRUN = true ]; then
+		echo "#" >"$output"
+		return
+	fi
 	local resp
 	url="${url}/${url##*/}-${version//./-}-release/"
 	resp=$(req "$url" -) || return 1
@@ -162,7 +161,9 @@ dl_uptodown() {
 	req "$url" "$output"
 }
 get_uptodown_pkg_name() {
-	req "https://${1}.en.uptodown.com/android/download" - | grep -A 1 "Package Name" | tail -1 | tr -d '</td>'
+	local p
+	p=$(req "https://${1}.en.uptodown.com/android/download" - | grep -A 1 "Package Name" | tail -1)
+	echo "${p:4:-5}"
 }
 # ------------------------------
 
@@ -171,7 +172,11 @@ patch_apk() {
 	declare -r tdir=$(mktemp -d -p $TEMP_DIR)
 	local cmd="java -jar $RVX_CLI_JAR --temp-dir=$tdir -c -a $stock_input -o $patched_apk -b $RVX_PATCHES_JAR --keystore=ks.keystore $patcher_args"
 	echo "$cmd"
-	eval "$cmd"
+	if [ $DRYRUN = true ]; then
+		cp -f "$stock_input" "$patched_apk"
+	else
+		eval "$cmd"
+	fi
 }
 
 zip_module() {
@@ -183,7 +188,7 @@ zip_module() {
 	cd ../..
 }
 
-build_rvx() {
+build_rv() {
 	local -n args=$1
 	local version patcher_args build_mode_arr pkg_name uptwod_resp
 	local mode_arg=${args[build_mode]} version_mode=${args[version]}
@@ -245,7 +250,7 @@ build_rvx() {
 		echo "Choosing version '${version}'"
 
 		local stock_apk="${TEMP_DIR}/${app_name_l}-stock-v${version}-${arch}.apk"
-		local apk_output="${BUILD_DIR}/${app_name_l}-revanced-extended-v${version}-${arch}.apk"
+		local apk_output="${BUILD_DIR}/${app_name_l}-revanced-v${version}-${arch}.apk"
 		if [ "${args[microg_patch]}" ]; then
 			local patched_apk="${TEMP_DIR}/${app_name_l}-revanced-extended-v${version}-${arch}-${build_mode}.apk"
 		else
@@ -304,7 +309,7 @@ build_rvx() {
 			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/update/${upj}" \
 			"$base_template"
 
-		local module_output="${app_name_l}-revanced-extended-magisk-v${version}-${arch}.zip"
+		local module_output="${app_name_l}-revanced-magisk-v${version}-${arch}.zip"
 		zip_module "$patched_apk" "$module_output" "$stock_apk" "$pkg_name" "$base_template"
 		rm -rf "$base_template"
 
@@ -332,7 +337,7 @@ module_prop() {
 name=${2}
 version=v${3}
 versionCode=${NEXT_VER_CODE}
-author=j-hc & MatadorProBr
+author=j-hc % MatadorProBr
 description=${4}" >"${6}/module.prop"
 
 	if [ "$ENABLE_MAGISK_UPDATE" = true ]; then echo "updateJson=${5}" >>"${6}/module.prop"; fi
