@@ -250,7 +250,7 @@ build_rv() {
 		echo "Choosing version '${version}'"
 
 		local stock_apk="${TEMP_DIR}/${app_name_l}-stock-v${version}-${arch}.apk"
-		local apk_output="${BUILD_DIR}/${app_name_l}-revanced-v${version}-${arch}.apk"
+		local apk_output="${BUILD_DIR}/${app_name_l}-revanced-extended-v${version}-${arch}.apk"
 		if [ "${args[microg_patch]}" ]; then
 			local patched_apk="${TEMP_DIR}/${app_name_l}-revanced-extended-v${version}-${arch}-${build_mode}.apk"
 		else
@@ -309,7 +309,7 @@ build_rv() {
 			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/update/${upj}" \
 			"$base_template"
 
-		local module_output="${app_name_l}-revanced-magisk-v${version}-${arch}.zip"
+		local module_output="${app_name_l}-revanced-extended-magisk-v${version}-${arch}.zip"
 		zip_module "$patched_apk" "$module_output" "$stock_apk" "$pkg_name" "$base_template"
 		rm -rf "$base_template"
 
