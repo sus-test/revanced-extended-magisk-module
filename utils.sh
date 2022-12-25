@@ -188,7 +188,7 @@ zip_module() {
 	cd ../..
 }
 
-build_rv() {
+build_rvx() {
 	local -n args=$1
 	local version patcher_args build_mode_arr pkg_name uptwod_resp
 	local mode_arg=${args[build_mode]} version_mode=${args[version]}
