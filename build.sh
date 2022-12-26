@@ -57,7 +57,7 @@ for t in $(toml_get_all_tables); do
 	[ "$merge_integrations" = true ] && app_args[patcher_args]="${app_args[patcher_args]} -m ${RVX_INTEGRATIONS_APK}"
 	[ "$exclusive_patches" = true ] && app_args[patcher_args]="${app_args[patcher_args]} --exclusive"
 
-	build_RVX app_args &
+	build_rvx app_args &
 done
 wait
 
