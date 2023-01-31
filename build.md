@@ -1,27 +1,18 @@
 CLI: revanced-cli-2.21.0-all.jar  
-Integrations: app-release-unsigned-v0.94.2.apk  
-Patches: revanced-patches-2.158.1.jar  
+Integrations: app-release-unsigned-v0.94.5.apk  
+Patches: revanced-patches-2.158.4.jar  
 
 YouTube
 ==
-- remove `custom-video-buffer` patch: no longer valid in the latest YT  https://github.com/inotia00/ReVanced_Extended/issues/198
-- fix: `force-vp9-codec` patch applied to wrong method
-- fix: default video speed not applied in certain circumstances
-- fix: default video quality not applied in portrait video https://github.com/inotia00/ReVanced_Extended/issues/1
-- refactor `custom-branding-icon` patch
-
+- add `disable-shorts-player-pip` patch (Experimental Flags)
+- fix: `Hide preview comment` setting hides Chapters area in video info panel
+- refactor: `Hide shorts player subscriptions button` setting now hides the red subscribe button, too
 - crowdin translation update
-`Arabic`, `Chinese Simplified`, `French`, `Greek`, `Indonesian`, `Japanese`, `Korean`, `Russian`, `Spanish`, `Vietnamese`
-
-YouTube Music
-==
-- patch renamed
-: `custom-branding-music-red` → `custom-branding-music-afn-red`
-- add `custom-branding-music-afn-blue` patch
+`Arabic`,  `French`, `Indonesian`, `Russian`, `Spanish`
 
 ETC
 ==
-- bump revanced-patches-v2.158.0
+- add suport YouTube v18.03.42
 
 ※ Compatible ReVanced Manager: v0.0.53
 ※ If you want to contribute to the translation, refer below
@@ -31,9 +22,9 @@ ETC
 - [other countries](https://crowdin.com/project/revancedextended)
   
 **App Versions:**  
-YouTube: 17.49.37  
 Music (arm64-v8a): 5.41.50  
 Music (arm-v7a): 5.41.50  
+YouTube: 17.49.37  
 
 Install [Vanced Extended Microg](https://github.com/inotia00/VancedMicroG/releases) or [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or YouTube Music  
 
