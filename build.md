@@ -1,32 +1,20 @@
 CLI: revanced-cli-2.21.0-all.jar  
-Integrations: revanced-integrations-0.101.38-v0.101.38.apk  
-Patches: revanced-patches-2.168.38.jar  
+Integrations: revanced-integrations-0.102.1-v0.102.1.apk  
+Patches: revanced-patches-2.168.40.jar  
 
 YouTube
 ==
-- refactor(default-video-quality): apply the official ReVanced commit
-- refactor(hide-double-tap-overlay-filter): also hide the 'white circle overlay' https://github.com/inotia00/ReVanced_Extended/issues/745
-- refactor(overlay-buttons): move download button's onClick event to VideoHelper
-- refactor(settings): no longer exposed in patch list (included by default)
-- refactor(settings): when `Switching the create button and notification button` is on, `Hide create button` is disabled
-- update adblock filter
+- fix(general-ads): `Hide general ads` hides offline download list
 - crowdin translation update
-`Brazilian`, `Chinese Simplified`, `Chinese Traditional`, `German`, `Indonesian`, `Italian`, `Japanese`, `Korean`, `Vietnamese`, `Vietnamese`
+`French`, `Polish`
 
 
 YouTube Music
 ==
-- add `amoled` patch
-- refactor(music-settings): no longer exposed in patch list
-- crowdin translation update
-`Brazilian`, `Vietnamese`
-
-
-ETC
-==
-- add support YouTube v18.14.41
-- drop support YouTube v18.14.40
-- refactor: abstract integrations patch away from YouTube and YT Music
+- add `share-button-hook` patch (Experimental Flags)
+: Replace share button with external download button. The package name of the default downloader can be changed through `options.toml`. (Default: PowerTube)
+- refactor(hide-new-playlist): apply a much safer patching method (also fix https://github.com/inotia00/ReVanced_Extended/issues/685)
+- refactor(hide-upgrade-button): hide upgrade banner from homepage
 
 
 ※ Compatible ReVanced Manager: v0.0.57
@@ -37,9 +25,9 @@ ETC
 - [Other Countries](https://crowdin.com/project/revancedextended)
   
 **App Versions:**  
-Music (arm-v7a): 5.52.51  
 Music (arm64-v8a): 5.52.51  
 YouTube: 18.14.41  
+Music (arm-v7a): 5.52.51  
 
 Install [Vanced Extended Microg](https://github.com/inotia00/VancedMicroG/releases) or [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or YouTube Music  
 
