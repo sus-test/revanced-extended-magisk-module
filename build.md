@@ -1,6 +1,6 @@
 CLI: revanced-cli-2.21.0-all.jar  
-Integrations: revanced-integrations-0.105.3-v0.105.3.apk  
-Patches: revanced-patches-2.171.3.jar  
+Integrations: revanced-integrations-0.105.4-v0.105.4.apk  
+Patches: revanced-patches-2.171.4.jar  
 
 YouTube
 ==
@@ -14,6 +14,7 @@ YouTube
 - feat(spoof-app-version): rename patch (`enable-old-layout` → `spoof-app-version`)
 - feat(spoof-app-version): user selectable version to spoof
 - fix(overlay-buttons): repeat button in playlist cannot changed https://github.com/inotia00/ReVanced_Extended/issues/836
+- fix(custom-video-speed): crash due to invalid key https://github.com/inotia00/ReVanced_Extended/issues/911
 - refactor(patch-options): remove `OverlayButtonsIcon`, `clientSpoofVersion` options
 (You should remove `options.toml` file, or simply reinstall the builder)
 - crowdin translation update
@@ -40,8 +41,8 @@ ETC
 - [Other Countries](https://crowdin.com/project/revancedextended)
   
 **App Versions:**  
-Music (arm64-v8a): 5.54.52  
 Music (arm-v7a): 5.54.52  
+Music (arm64-v8a): 5.54.52  
 
 Install [Vanced Extended Microg](https://github.com/inotia00/VancedMicroG/releases) or [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or YouTube Music  
 
